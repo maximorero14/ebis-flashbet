@@ -1,0 +1,135 @@
+[
+  {
+    "name": "RoundOpened",
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "marketId",
+        "type": "uint8",
+        "indexed": true
+      },
+      {
+        "name": "roundId",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "openedAt",
+        "type": "uint256",
+        "indexed": false
+      },
+      {
+        "name": "referencePrice",
+        "type": "int256",
+        "indexed": false
+      }
+    ]
+  },
+  {
+    "name": "BetPlaced",
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "marketId",
+        "type": "uint8",
+        "indexed": true
+      },
+      {
+        "name": "roundId",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "bettor",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "dir",
+        "type": "uint8",
+        "indexed": false
+      },
+      {
+        "name": "netAmount",
+        "type": "uint256",
+        "indexed": false
+      },
+      {
+        "name": "fee",
+        "type": "uint256",
+        "indexed": false
+      }
+    ]
+  },
+  {
+    "name": "RoundResolved",
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "marketId",
+        "type": "uint8",
+        "indexed": true
+      },
+      {
+        "name": "roundId",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "upWon",
+        "type": "bool",
+        "indexed": false
+      },
+      {
+        "name": "referencePrice",
+        "type": "int256",
+        "indexed": false
+      },
+      {
+        "name": "finalPrice",
+        "type": "int256",
+        "indexed": false
+      },
+      {
+        "name": "totalPool",
+        "type": "uint256",
+        "indexed": false
+      },
+      {
+        "name": "closedAt",
+        "type": "uint256",
+        "indexed": false
+      }
+    ]
+  },
+  {
+    "name": "PayoutClaimed",
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "marketId",
+        "type": "uint8",
+        "indexed": true
+      },
+      {
+        "name": "roundId",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "user",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": false
+      }
+    ]
+  }
+]

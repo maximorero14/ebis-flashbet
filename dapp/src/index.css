@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ──────────────────────────────────────────────
+   Variables CSS — paleta cyberpunk FlashBet
+   ────────────────────────────────────────────── */
+:root {
+  --bg-base:      #030712;
+  --bg-surface:   #0f172a;
+  --bg-border:    #1e293b;
+  --neon-cyan:    #00f5ff;
+  --neon-purple:  #a855f7;
+  --neon-magenta: #f0abfc;
+  --up-color:     #4ade80;
+  --down-color:   #f43f5e;
+  --text-primary: #f1f5f9;
+  --text-muted:   #64748b;
+}
+
+/* ──────────────────────────────────────────────
+   Reset base
+   ────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: 'JetBrains Mono', monospace;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ──────────────────────────────────────────────
+   Efecto scanline — overlay sutil tipo terminal CRT
+   ────────────────────────────────────────────── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ──────────────────────────────────────────────
+   Glassmorphism card — contenedor estándar
+   ────────────────────────────────────────────── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+}
+
+/* ──────────────────────────────────────────────
+   Neon glow — elementos activos
+   ────────────────────────────────────────────── */
+.neon-glow {
+  box-shadow:
+    0 0 20px rgba(0, 245, 255, 0.35),
+    0 0 40px rgba(0, 245, 255, 0.1);
+}
+
+/* ──────────────────────────────────────────────
+   Botones pulsantes UP / DOWN
+   ────────────────────────────────────────────── */
+@keyframes pulse-up {
+  0%, 100% { box-shadow: 0 0 15px rgba(74, 222, 128, 0.4); }
+  50%       { box-shadow: 0 0 30px rgba(74, 222, 128, 0.8); }
+}
+
+@keyframes pulse-down {
+  0%, 100% { box-shadow: 0 0 15px rgba(244, 63, 94, 0.4); }
+  50%       { box-shadow: 0 0 30px rgba(244, 63, 94, 0.8); }
+}
+
+.btn-pulse-up   { animation: pulse-up   2s ease-in-out infinite; }
+.btn-pulse-down { animation: pulse-down 2s ease-in-out infinite; }
+
+/* ──────────────────────────────────────────────
+   Scrollbar cyberpunk
+   ────────────────────────────────────────────── */
+::-webkit-scrollbar        { width: 6px; height: 6px; }
+::-webkit-scrollbar-track  { background: var(--bg-surface); }
+::-webkit-scrollbar-thumb  { background: var(--neon-cyan); border-radius: 3px; opacity: 0.5; }
+
+/* ──────────────────────────────────────────────
+   RainbowKit — override de fuente
+   ────────────────────────────────────────────── */
+[data-rk] button { font-family: 'JetBrains Mono', monospace !important; }

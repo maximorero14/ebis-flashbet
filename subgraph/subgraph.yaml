@@ -1,0 +1,31 @@
+specVersion: 1.0.0
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: FlashPredMarket
+    network: sepolia
+    source:
+      address: "0x1a009c8059217446b739d6647c683613ccfc7e91"
+      abi: FlashPredMarket
+      startBlock: 10374041
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Round
+        - Bet
+      abis:
+        - name: FlashPredMarket
+          file: ./abis/FlashPredMarket.json
+      eventHandlers:
+        - event: RoundOpened(indexed uint8,indexed uint256,uint256,int256)
+          handler: handleRoundOpened
+        - event: BetPlaced(indexed uint8,indexed uint256,indexed address,uint8,uint256,uint256)
+          handler: handleBetPlaced
+        - event: RoundResolved(indexed uint8,indexed uint256,bool,int256,int256,uint256,uint256)
+          handler: handleRoundResolved
+        - event: PayoutClaimed(indexed uint8,indexed uint256,indexed address,uint256)
+          handler: handlePayoutClaimed
+      file: ./src/flash-pred-market.ts

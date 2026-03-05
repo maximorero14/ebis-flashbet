@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# Generated files
+build/
+generated/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# MacOS
+.DS_Store

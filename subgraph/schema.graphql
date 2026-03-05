@@ -1,0 +1,24 @@
+type Round @entity(immutable: false) {
+  id: ID!
+  marketId: Int!
+  roundId: BigInt!
+  openedAt: BigInt!
+  closedAt: BigInt
+  referencePrice: BigInt!
+  finalPrice: BigInt
+  upWon: Boolean
+  totalPool: BigInt
+  resolved: Boolean!
+  bets: [Bet!]! @derivedFrom(field: "round")
+}
+
+type Bet @entity(immutable: false) {
+  id: ID!
+  round: Round!
+  bettor: Bytes!
+  direction: Int!
+  netAmount: BigInt!
+  fee: BigInt!
+  payout: BigInt
+  claimed: Boolean!
+}
