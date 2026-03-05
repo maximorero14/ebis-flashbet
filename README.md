@@ -627,21 +627,6 @@ interface IFlashOracle {
 }
 ```
 
-#### Implementación en producción (mainnet)
-
-En mainnet se desplegaría un `FlashOracle.sol` como wrapper sobre los feeds de Chainlink AggregatorV3:
-
-```
-BTC/USD: 0x1b44F3514751e1A3b3C7CA2C7F5f7C04A9Fcf5F (Sepolia reference)
-ETH/USD: 0x694AA1769357215DE4FAC081bf1f309aDC325306 (Sepolia reference)
-```
-
-Las validaciones de producción incluirían:
-```solidity
-if (block.timestamp - updatedAt > MAX_STALENESS) revert FlashOracle__StalePrice();
-if (answer <= 0) revert FlashOracle__InvalidPrice();
-```
-
 #### Implementación en testnet (Sepolia — este proyecto)
 
 Se usa **`MockFlashOracle`** (ver §5.6). Los feeds de Chainlink en Sepolia son lentos e inconsistentes para demos: pueden quedar estáticos durante minutos, haciendo que `openRound()` y `resolveRound()` vean el mismo precio y la ronda no tenga resultado significativo.
@@ -1057,6 +1042,38 @@ GOLDSKY_API_KEY=...                     # Para deploy del subgraph
 - 20 USDT en Sepolia para seed del yield reserve
   - Faucet: `https://sepolia.etherscan.io/address/0x7169d38820dfd117c3fa1f22a697dba58d90ba06`
 
+### Demo del mercado de predicción (`demo_pred_market.sh`)
+
+Script que ejecuta el ciclo completo del mercado de predicción en Sepolia en ~2 minutos:
+
+```bash
+cd protocol/script
+./demo_pred_market.sh
+```
+
+**Qué hace en secuencia:**
+
+- **Step A** — Despliega `FlashToken`, `MockFlashOracle`, `Treasury` y `FlashPredMarket`. Abre una ronda BTC/USD fijando el precio de referencia (`$30,000`) en ese instante. Player 1 apuesta 200 $FLASH a UP y Player 2 apuesta 300 $FLASH a DOWN. Verifica todos los contratos en Etherscan automáticamente.
+- **Espera automática** — El script aguarda 70s (60s de ronda + 10s de buffer) con una barra de progreso en tiempo real.
+- **Step B** — Actualiza el oracle a `$31,000`, llama `resolveRound()` (UP gana), y Player 1 reclama su payout proporcional.
+
+**Resultado real en Sepolia (última ejecución):**
+
+```
+Player 1 (200 FLASH on UP)  → Payout: 495 FLASH  (+297 FLASH de profit)
+Player 2 (300 FLASH on DOWN)→ Pierde 297 FLASH net
+Treasury                    → Acumula 5 FLASH (1% fee de cada apuesta)
+Market balance              → 0 FLASH (solvente, todo distribuido)
+```
+
+| Lo que demuestra | Mecanismo |
+|---|---|
+| Precio de referencia bloqueado al abrir | `openRound()` lee oracle en ese instante |
+| Apuestas hasta el último segundo | Estilo Polymarket — sin fase de cierre |
+| Fee automático al Treasury | 1% de cada apuesta en el mismo tx |
+| Payout proporcional | `(bet * totalPool) / winningSide` |
+| Snapshot histórico | `ResolvedRound` persiste para claims futuros |
+
 ---
 
 ## 11. Indexación con The Graph
@@ -1135,7 +1152,9 @@ Todos verificados en Etherscan:
 
 ## 13. Frontend (DApp)
 
-La DApp es una aplicación **React 19 + TypeScript** con tema cyberpunk (Orbitron + JetBrains Mono, paleta cyan/purple). Está desplegada en Vercel y se comunica con los contratos via `wagmi v2` + `viem v2` + `RainbowKit v2`.
+La DApp es una aplicación **React 19 + TypeScript** con tema cyberpunk (Orbitron + JetBrains Mono, paleta cyan/purple). Está desplegada en Vercel y se comunica con los contratos vía `wagmi v2` + `viem v2` + `RainbowKit v2`.
+
+> **Wallet soportada:** La DApp usa exclusivamente **MetaMask** (o cualquier extensión de wallet inyectada en el navegador). No se usa WalletConnect ni ningún SDK de conexión remota. Esto garantiza que el evento `accountsChanged` del navegador se propague correctamente tanto en local como en producción, de forma que cambiar de cuenta en MetaMask actualiza la DApp de forma inmediata.
 
 ### Stack frontend
 
@@ -1180,8 +1199,10 @@ La DApp es una aplicación **React 19 + TypeScript** con tema cyberpunk (Orbitro
 ### Variables de entorno requeridas (`dapp/.env.local`)
 
 ```env
-VITE_SEPOLIA_RPC_URL=https://sepolia.infura.io/v3/TU_KEY
-VITE_WALLETCONNECT_PROJECT_ID=opcional
+# RPC de Sepolia — Alchemy
+VITE_SEPOLIA_RPC_URL=https://eth-sepolia.g.alchemy.com/v2/TU_KEY
+
+# Contratos desplegados
 VITE_FLASHTOKEN_ADDRESS=0x...
 VITE_FLASHVAULT_ADDRESS=0x...
 VITE_FLASHPREDMARKET_ADDRESS=0x...
@@ -1189,9 +1210,12 @@ VITE_TREASURY_ADDRESS=0x...
 VITE_MOCKORACLE_ADDRESS=0x...
 VITE_MOCKAAVEPOOL_ADDRESS=0x...
 VITE_MOCKATOKEN_ADDRESS=0x...
-VITE_USDT_ADDRESS=0x...
+
+# The Graph
 VITE_GRAPH_URL=https://api.goldsky.com/...
 ```
+
+> **Nota:** `VITE_WALLETCONNECT_PROJECT_ID` ha sido eliminada. La dapp usa el conector `injected` de wagmi directamente — no depende de WalletConnect.
 
 Todas las direcciones tienen fallback hardcodeado en `dapp/src/config/contracts.ts` con los valores del último deploy.
 
@@ -1240,7 +1264,7 @@ ebis-flashbet/
 │   │   ├── abi/                       # ABIs de los contratos
 │   │   ├── config/
 │   │   │   ├── contracts.ts           # Addresses por chainId (con fallback hardcodeado)
-│   │   │   └── wagmi.ts               # Config wagmi + RainbowKit (Sepolia only)
+│   │   │   └── wagmi.ts               # Config wagmi con conector injected (Sepolia, MetaMask only)
 │   │   ├── hooks/
 │   │   │   ├── usePredMarket.ts       # Mercado: apuestas, rondas, payout
 │   │   │   ├── useVault.ts            # Vault: depósito, redención, harvest
@@ -1272,7 +1296,6 @@ ebis-flashbet/
 │   └── vercel.json                    # SPA routing en Vercel
 │
 ├── README.md                          # Esta documentación
-├── CLAUDE.md                          # Instrucciones de desarrollo para Claude
 └── [MDB] TFM Parte I - Proyecto Ethereum.pdf  # Guía oficial del TFM (EBIS)
 ```
 
@@ -1304,7 +1327,7 @@ FlashBet no opera en aislamiento — integra varios protocolos y herramientas de
 
 - **Aave V3**: el vault suministra USDT al pool de Aave para generar yield pasivo.
 - **The Graph / Goldsky**: un subgraph indexa los eventos de `FlashPredMarket` y expone una API GraphQL para datos históricos sin depender de `getLogs`.
-- **RainbowKit + wagmi v2 + viem v2**: stack moderno de conexión de wallets con soporte multi-wallet.
+- **RainbowKit + wagmi v2 + viem v2**: stack de conexión de wallets inyectadas (MetaMask). Se usa el conector `injected` nativo de wagmi — sin WalletConnect — para garantizar sincronización reactiva al cambiar de cuenta en producción.
 - **MockFlashOracle con simulación**: oracle propio con ruido pseudo-aleatorio por bloque, garantizando precios distintos entre apertura y cierre de ronda sin ningún servicio externo.
 - **`deploy.sh`**: script de automatización que despliega contratos, actualiza variables de entorno, regenera el subgraph y lo publica en Goldsky en un solo comando.
 
@@ -1312,7 +1335,6 @@ FlashBet no opera en aislamiento — integra varios protocolos y herramientas de
 
 - **Código fuente**: este repositorio en GitHub
 - **DApp**: desplegada en Vercel
-- **Defensa**: presentación + demo en vivo (máx. 15 minutos)
 
 ---
 
