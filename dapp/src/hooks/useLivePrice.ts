@@ -13,12 +13,16 @@
  * lo que hace que cada movimiento de $10-20 sea visualmente significativo.
  */
 import { useState, useEffect, useRef } from 'react'
-import type { PricePoint } from './useCoinGeckoPrice'
+
+export interface PricePoint {
+  time: number
+  price: number
+}
 
 const BINANCE_WS = 'wss://stream.binance.com:9443/ws'
 
 const SYMBOL_MAP: Record<'bitcoin' | 'ethereum', string> = {
-  bitcoin:  'btcusdt',
+  bitcoin: 'btcusdt',
   ethereum: 'ethusdt',
 }
 
@@ -26,26 +30,26 @@ const SYMBOL_MAP: Record<'bitcoin' | 'ethereum', string> = {
 const MAX_LIVE_POINTS = 300
 
 export interface LivePriceData {
-  livePoints:     PricePoint[]
-  currentPrice:   number | null
+  livePoints: PricePoint[]
+  currentPrice: number | null
   priceChange24h: number | null   // cambio % 24h desde Binance (campo "P")
-  isConnected:    boolean
+  isConnected: boolean
 }
 
 export function useLivePrice(coinId: 'bitcoin' | 'ethereum'): LivePriceData {
-  const [livePoints,     setLivePoints]     = useState<PricePoint[]>([])
-  const [currentPrice,   setCurrentPrice]   = useState<number | null>(null)
+  const [livePoints, setLivePoints] = useState<PricePoint[]>([])
+  const [currentPrice, setCurrentPrice] = useState<number | null>(null)
   const [priceChange24h, setPriceChange24h] = useState<number | null>(null)
-  const [isConnected,    setIsConnected]    = useState(false)
+  const [isConnected, setIsConnected] = useState(false)
 
-  const wsRef   = useRef<WebSocket | null>(null)
+  const wsRef = useRef<WebSocket | null>(null)
   const mounted = useRef(true)
 
   useEffect(() => {
     mounted.current = true
 
     const symbol = SYMBOL_MAP[coinId]
-    const url    = `${BINANCE_WS}/${symbol}@miniTicker`
+    const url = `${BINANCE_WS}/${symbol}@miniTicker`
 
     const connect = () => {
       const ws = new WebSocket(url)
@@ -58,7 +62,7 @@ export function useLivePrice(coinId: 'bitcoin' | 'ethereum'): LivePriceData {
       ws.onmessage = (evt) => {
         if (!mounted.current) return
         try {
-          const data  = JSON.parse(evt.data as string)
+          const data = JSON.parse(evt.data as string)
           const price = parseFloat(data.c)  // "c" = current close price
           if (isNaN(price) || price <= 0) return
 
