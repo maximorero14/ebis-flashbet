@@ -1197,7 +1197,6 @@ La DApp es una aplicación **React 19 + TypeScript** con tema cyberpunk (Orbitro
 | `useHistory` | Historial de rondas via The Graph (GraphQL + paginación) |
 | `useAdminStats` | Métricas globales + top 5 winners/losers via The Graph |
 | `useLivePrice` | Precio on-chain desde MockFlashOracle (8 decimales → display) |
-| `useCoinGeckoPrice` | Precio off-chain BTC/ETH desde CoinGecko API |
 | `useRoundTimer` | Countdown MM:SS en tiempo real |
 | `useIsAdmin` | Booleano: `address == FlashPredMarket.owner()` |
 
@@ -1276,8 +1275,7 @@ ebis-flashbet/
 │   │   │   ├── useFlashBalance.ts     # Balance $FLASH del usuario
 │   │   │   ├── useHistory.ts          # Historial de rondas via The Graph
 │   │   │   ├── useAdminStats.ts       # Métricas globales + top wallets
-│   │   │   ├── useLivePrice.ts        # Precio on-chain (MockFlashOracle)
-│   │   │   ├── useCoinGeckoPrice.ts   # Precio off-chain (CoinGecko API)
+│   │   │   ├── useLivePrice.ts        # Precio live via Binance WebSocket
 │   │   │   ├── useRoundTimer.ts       # Countdown MM:SS en tiempo real
 │   │   │   └── useIsAdmin.ts          # ¿Es el usuario el owner del contrato?
 │   │   ├── components/
