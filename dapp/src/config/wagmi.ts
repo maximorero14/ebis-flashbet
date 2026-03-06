@@ -1,21 +1,30 @@
 /**
- * Configuración de wagmi — solo wallets inyectadas (MetaMask, Rabby, etc.)
+ * Configuración de wagmi + RainbowKit — solo wallets inyectadas.
  *
- * No usa WalletConnect. Se conecta directamente a la wallet del navegador
- * a través del conector `injected`, que escucha el evento nativo
- * `accountsChanged` del browser tanto en local como en producción.
+ * Usa getDefaultConfig con una lista explícita de wallets que excluye
+ * WalletConnect. Así no se necesita VITE_WALLETCONNECT_PROJECT_ID y
+ * el conector de MetaMask que genera RainbowKit maneja correctamente
+ * el evento accountsChanged para sincronizar cambios de cuenta.
  *
  * Cadena soportada: Sepolia (testnet Ethereum).
- * RPC: endpoint de Alchemy definido en .env.local / variables de entorno.
+ * RPC: endpoint definido en .env.local / variables de entorno.
  */
-import { createConfig } from 'wagmi'
+import { getDefaultConfig } from '@rainbow-me/rainbowkit'
+import { metaMaskWallet, injectedWallet, rabbyWallet } from '@rainbow-me/rainbowkit/wallets'
 import { sepolia } from 'wagmi/chains'
 import { http } from 'wagmi'
-import { injected } from 'wagmi/connectors'
 
-export const wagmiConfig = createConfig({
+export const wagmiConfig = getDefaultConfig({
+  appName: 'FlashBet',
+  // projectId es requerido por el tipo pero no se usa: no hay wallets WalletConnect.
+  projectId: 'flashbet-no-walletconnect',
   chains: [sepolia],
-  connectors: [injected()],
+  wallets: [
+    {
+      groupName: 'Browser wallets',
+      wallets: [metaMaskWallet, rabbyWallet, injectedWallet],
+    },
+  ],
   transports: {
     [sepolia.id]: http(import.meta.env.VITE_SEPOLIA_RPC_URL),
   },

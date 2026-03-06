@@ -5,19 +5,19 @@
  * Markets → /markets (ruta dedicada)
  * History → /history (ruta separada)
  */
-import { ConnectButton }     from '@rainbow-me/rainbowkit'
-import { useAccount }        from 'wagmi'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { useAccount } from 'wagmi'
 import { Link, useLocation } from 'react-router-dom'
-import { useState }          from 'react'
-import { useFlashBalance }   from '../../hooks/useFlashBalance'
-import { useIsAdmin }        from '../../hooks/useIsAdmin'
-import { formatFlash }       from '../../utils/format'
+import { useState } from 'react'
+import { useFlashBalance } from '../../hooks/useFlashBalance'
+import { useIsAdmin } from '../../hooks/useIsAdmin'
+import { formatFlash } from '../../utils/format'
 
 export function Navbar() {
-  const { isConnected }   = useAccount()
+  const { isConnected } = useAccount()
   const { data: balance } = useFlashBalance()
-  const location          = useLocation()
-  const isAdmin           = useIsAdmin()
+  const location = useLocation()
+  const isAdmin = useIsAdmin()
   const [mobileOpen, setMobileOpen] = useState(false)
 
   const closeMobile = () => setMobileOpen(false)
@@ -54,7 +54,7 @@ export function Navbar() {
 
           {/* Nav — desktop */}
           <nav className="hidden md:flex items-center gap-6">
-            {navLink('/vault',   'Vault')}
+            {navLink('/vault', 'Vault')}
             {navLink('/markets', 'Markets')}
             {navLink('/history', 'History')}
             {isAdmin && (
@@ -95,9 +95,9 @@ export function Navbar() {
             >
               <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
                 {mobileOpen ? (
-                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/>
+                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                 ) : (
-                  <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"/>
+                  <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
                 )}
               </svg>
             </button>
