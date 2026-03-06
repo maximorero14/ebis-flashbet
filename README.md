@@ -106,6 +106,14 @@ Los mercados de predicción tradicionales (Polymarket, Augur) tienen varios prob
 2. **$FLASH como colateral nativo**: al estar respaldado 1:1 por USDT en Aave, `$FLASH` no es inflacionario — solo existe cuando hay USDT detrás.
 3. **Simplicidad operativa**: sin Chainlink Automation, sin DAOs, sin vesting. El owner opera las rondas manualmente desde el Admin Panel — comprensible, auditable, demostrable en un TFM.
 
+### Limitaciones de Sepolia que motivaron el uso de mocks
+
+Durante el desarrollo se intentó integrar los servicios reales antes de recurrir a mocks:
+
+- **Aave V3**: el pool de Sepolia tiene supply cap alcanzado en los principales assets — `supply()` revierte cuando el mercado está al límite. Se optó por `MockAavePool` para garantizar que los depósitos siempre funcionen en testnet.
+- **Chainlink Price Feeds**: los feeds de Sepolia (BTC/USD, ETH/USD) se actualizan aproximadamente cada hora, no en cada bloque. Esto hace que `referencePrice` y `finalPrice` sean idénticos en rondas cortas, imposibilitando la resolución. Se implementó `MockFlashOracle` con ruido por bloque para evitar este empate sistemático.
+- **Chainlink Automation**: registrar un Upkeep en Sepolia requiere LINK real (no hay faucet fiable) y el servicio es inestable — los keepers fallan o se retrasan sin garantía de ejecución. Se descartó en favor de resolución manual por el owner desde el Admin Panel.
+
 ---
 
 ## 3. Arquitectura general
