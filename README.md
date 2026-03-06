@@ -3,16 +3,21 @@
 > **Trabajo Final de Máster — Máster en Ingeniería y Desarrollo Blockchain (MDB)**
 > Protocolo DeFi de dos capas desplegado en Ethereum Sepolia (testnet).
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Solidity-0.8.30-363636?style=for-the-badge&logo=solidity&logoColor=white" />
-  <img src="https://img.shields.io/badge/Foundry-Framework-DBEAFE?style=for-the-badge&logo=ethereum&logoColor=black" />
-  <img src="https://img.shields.io/badge/React-19.2.0-61DAFB?style=for-the-badge&logo=react&logoColor=black" />
-  <img src="https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
-  <img src="https://img.shields.io/badge/wagmi-v2-1C1C1C?style=for-the-badge&logo=ethereum&logoColor=white" />
-  <img src="https://img.shields.io/badge/Network-Sepolia-6851FF?style=for-the-badge&logo=ethereum&logoColor=white" />
-  <img src="https://img.shields.io/badge/Tests-120%20passing-22c55e?style=for-the-badge&logo=checkmarx&logoColor=white" />
-  <img src="https://img.shields.io/badge/Deploy-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" />
-</p>
+🌐 **DApp disponible en:** [https://ebis-flashbet.vercel.app/](https://ebis-flashbet.vercel.app/)
+
+<div align="center">
+
+[![Solidity](https://img.shields.io/badge/Solidity-0.8.30-363636.svg)](https://soliditylang.org/)
+[![Foundry](https://img.shields.io/badge/Foundry-Contracts-FFDB1C.svg)](https://getfoundry.sh/)
+[![React](https://img.shields.io/badge/React-19.2.0-61DAFB.svg)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6.svg)](https://www.typescriptlang.org/)
+[![wagmi](https://img.shields.io/badge/wagmi-v2-1C1C1C.svg)](https://wagmi.sh/)
+[![Vite](https://img.shields.io/badge/Vite-7.2.4-646CFF.svg)](https://vitejs.dev/)
+[![Live on Sepolia](https://img.shields.io/badge/Live-Sepolia%20Testnet-success)](https://sepolia.etherscan.io/)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-181717?logo=github)](https://github.com/maximorero14/ebis-flashbet)
+[![Vercel](https://img.shields.io/badge/Vercel-Deployment-black?logo=vercel)](https://ebis-flashbet.vercel.app/)
+
+</div>
 
 <p align="center">
   <a href="https://sepolia.etherscan.io/address/0xfF7b0425cFf18969B03b36b2125eef13AC5Faa22">

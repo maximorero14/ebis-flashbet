@@ -2,6 +2,8 @@
 
 > Mercado de predicción DeFi en Sepolia Testnet — TFM Máster en Ingeniería y Desarrollo Blockchain (EBIS)
 
+🌐 **DApp disponible en:** [https://ebis-flashbet.vercel.app/](https://ebis-flashbet.vercel.app/)
+
 ## ¿Qué es FlashBet?
 
 FlashBet es un protocolo DeFi de dos capas desplegado en Ethereum Sepolia:
