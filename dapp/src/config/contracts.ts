@@ -15,15 +15,15 @@ const e = (key: string, fallback: string) =>
 export const CONTRACTS = {
   [sepolia.id]: {
     // ── Protocolo principal ──────────────────────────
-    FlashToken:      e('VITE_FLASHTOKEN_ADDRESS',      '0xC7e23DB5aD763bE17d7327E62a402D66eCB5970C'),
-    FlashVault:      e('VITE_FLASHVAULT_ADDRESS',      '0x4Ed1547b1D049E5aC4BF28aAc51228B49805A2AE'),
-    FlashPredMarket: e('VITE_FLASHPREDMARKET_ADDRESS', '0xfF7b0425cFf18969B03b36b2125eef13AC5Faa22'),
-    Treasury:        e('VITE_TREASURY_ADDRESS',        '0xdc2111EC6dc36F0D713baa3D4A8Cf803416E7721'),
+    FlashToken:      e('VITE_FLASHTOKEN_ADDRESS',      '0x783d48813d0568c20ac92f12899943eff33d9016'),
+    FlashVault:      e('VITE_FLASHVAULT_ADDRESS',      '0x6953c33a913f53500e882c32361f72472c521166'),
+    FlashPredMarket: e('VITE_FLASHPREDMARKET_ADDRESS', '0x1a009c8059217446b739d6647c683613ccfc7e91'),
+    Treasury:        e('VITE_TREASURY_ADDRESS',        '0xfd602e71ea5058aea8a0f501167828e5ff923f1d'),
 
     // ── Mocks Sepolia (reemplazan Aave + Chainlink en testnet) ──
-    MockFlashOracle: e('VITE_MOCKORACLE_ADDRESS',   '0xC455281F05e96853A8b1ad3869246ebb61AabA1c'),
-    MockAavePool:    e('VITE_MOCKAAVEPOOL_ADDRESS', '0x15c076D355fE3cE4C03bf193AA13f16806A7aEE1'),
-    MockAToken:      e('VITE_MOCKATOKEN_ADDRESS',   '0x96F88e150A5dFE2dbfa3c570eE4310E78477D3d0'),
+    MockFlashOracle: e('VITE_MOCKORACLE_ADDRESS',   '0x07a8084eeaae1b7769d291efe98d556aa255064a'),
+    MockAavePool:    e('VITE_MOCKAAVEPOOL_ADDRESS', '0xd484ddc9bf2dc06ce37a7a2a7dae7641561e7fb6'),
+    MockAToken:      e('VITE_MOCKATOKEN_ADDRESS',   '0xad3a61726a2bbbc20b8ad889548f419c6e402940'),
 
     // ── USDT real en Sepolia (dirección fija, no cambia entre deploys) ──
     USDT:            e('VITE_USDT_ADDRESS', '0x7169D38820dfd117C3FA1f22a697dBA58d90BA06'),
